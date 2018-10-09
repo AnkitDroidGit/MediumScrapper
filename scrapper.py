@@ -12,9 +12,7 @@ class MediumScrapper(scrapy.Spider):
 
     autothrottle_enabled = True
 
-    def __init__(self, name=None, **kwargs):
-        super(MediumScrapper, self).__init__(name=None, **kwargs)
-        self.searchString = None
+    searchString = 'Android'
 
     def writeTofile(fileName, text):
         with codecs.open(fileName, 'w', 'utf-8') as outfile:
@@ -24,7 +22,7 @@ class MediumScrapper(scrapy.Spider):
         start_urls = ['https://www.medium.com/search/posts?q=Data%20Science']
 
         for url in start_urls:
-            yield scrapy.Request(url, 'GET', self.parse)
+            yield scrapy.Request(url, 'GET')
 
     def parse(self, response):
         # writeTofile("Log"+datetime.datetime.now().strftime("%Y%m%d_%H%M%S")+".txt",response.text)
@@ -33,7 +31,7 @@ class MediumScrapper(scrapy.Spider):
         # num_split= len(response_split)
         response_data = response_split[1]
         filename = "medium_" + self.searchString + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".json"
-        self.writeTofile(filename, response_data)
+        self.writeTofile(filename)
 
         with codecs.open(filename, 'r', 'utf-8') as infile:
             data = json.load(infile)
